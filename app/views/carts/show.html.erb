@@ -1,0 +1,65 @@
+
+<div class="center hero-unit">
+  <% if flash[:notice] %>
+      <p class="alert"><%= flash[:notice] %></p>
+    <% end %>
+    <% if flash[:error] %>
+      <p class="error"><%= flash[:error] %></p>
+    <% end %>
+<h3>Cart</h3>
+<%total_price = 0%>
+<%quantity=0%>
+<table class="table table-striped">
+  <tr>
+    <th>Item</th>
+    <th>Description</th>
+    <th>Price</th>
+    <th>Quantity</th>
+    <th>Total Price</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+<% @cart.line_items.each do |item| %>
+	<% total_price += item.item.price*item.quantity %>
+	<%quantity+=item.quantity%>
+	<tr>
+		<td><%= item.item.name %></td>
+		<td><%= item.item.description %></td>
+		<td><%= sprintf("$%0.02f", item.item.price) %></td>
+		<td><%= item.quantity %></td>
+		<td><%=sprintf("$%0.02f",item.quantity * item.item.price) %>
+		<td> 
+			<%= link_to(add_path(item_id: item.item.id), method: :post, :class => 'btn btn-success	') do %>
+				<%= content_tag('i', nil, class: 'icon-plus-sign') %>
+			<%end%>
+		</td>
+		<td>
+			<% visibility = item.quantity>1 ? "visible" : "hidden" %>
+	      	<%= link_to(subtract_path(item_id: item.item.id), method: :post,class: 'btn btn-warning', style:"visibility:"+visibility+";") do %>
+				<%= content_tag('i', nil, class: 'icon-minus-sign') %>
+			<% end %>
+		</td>
+		<td>
+			<%= link_to(line_item_path(item_id: item.item.id, cart_id: @cart.id), method: :delete, :class => 'btn btn-danger	') do %>
+				<%= content_tag('i', nil, class: 'icon-remove-sign') %>
+			<%end%>
+		</td>
+	</tr>
+<% end %>
+	<tr>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td><strong><%=quantity%></strong></td>
+		<td><strong><%=sprintf("$%0.02f",total_price)%></strong></td>
+		<td colspan="3">
+      		<%= button_to 'Order', order_path(:cart_id => @cart.id), method: :post, :class=>"btn btn-primary" %>
+    	</td>
+	</tr>
+</table>
+
+<br />
+
+<!--<%= link_to 'New Item', new_item_path %>-->
+</div>

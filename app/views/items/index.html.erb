@@ -1,0 +1,44 @@
+
+<div class="center hero-unit">
+  <% if flash[:notice] %>
+      <p class="alert" style="display:inline; text-align:center; "><%= flash[:notice] %></p>
+    <% end %>
+    <% if flash[:error] %>
+      <p class="error"><%= flash[:error] %></p>
+    <% end %>
+<h1>Catalogue</h1>
+
+<table class="table table-striped">
+  <tr>
+    <th>Name</th>
+    <th>Price</th>
+    <th>Description</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+<% @items.each do |item| %>
+  <tr>
+    <td><%= item.name %></td>
+    <td><%= sprintf("$%0.02f", item.price) %></td>
+    <td><%= item.description %></td>
+    <% if !session[:edit]%>
+    <td colspan="3">
+      <%= button_to 'Add to Cart', add_path(:item_id => item.id), :class=>"btn btn-primary" %>
+    </td>
+    <% else %>
+    <td><%= button_to 'Show', item, :class=>"btn btn-success btn-mini" %></td>
+    <td><%= button_to 'Edit', edit_item_path(item), :class=>"btn btn-warning btn-mini" %></td>
+    <td><%= button_to 'Destroy', item, method: :delete, data: { confirm: 'Are you sure?' }, :class=>"btn btn-danger btn-mini" %></td>
+
+
+    <% end %>
+  </tr>
+<% end %>
+</table>
+
+<br />
+<%if session[:edit]%>
+<%= link_to 'New Item', new_item_path %>
+<%end%>
+</div>

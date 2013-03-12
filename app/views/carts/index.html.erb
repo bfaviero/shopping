@@ -1,0 +1,24 @@
+<div class="center hero-unit">
+<h1>Listing carts</h1>
+
+<table class="table table-striped">
+  <tr>
+    <th>Order ID</th>
+    <th>Buyer Name</th>
+    <th>Buyer ID</th>
+    <th></th>
+  </tr>
+
+<% @carts.each do |cart| %>
+  <tr>
+    <td><%=cart.id%></td>
+    <td><%=User.find(cart.user_id).first_name%></td>
+    <td><%=cart.user_id%></td>
+    <td><%= link_to 'Show', cart %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+</div>

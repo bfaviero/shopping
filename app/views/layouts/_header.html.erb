@@ -1,0 +1,42 @@
+<header class="navbar navbar-fixed-top navbar-inverse">
+      <div class="navbar-inner">
+          <div class="container">
+       
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" href="/">Shopping Cart App</a>
+       
+            
+            <h5 style="color:white; margin-left:10px; margin-top:13px;"class="pull-right">
+
+                Hello <%= current_user.first_name %>.
+              <% if current_user && !current_user.temp %>
+
+                <%= link_to "Log Out", logout_path, :class => 'nav_bar_link' %>
+              <% else %>
+                <%= link_to "Sign up", new_user_path, :class => 'nav_bar_link' %> or 
+                <%= link_to "Log in", new_session_path, :class => 'nav_bar_link' %>
+              <% end %>
+            </h5>
+            
+              <% if seller %>
+                  <h5 style="color:white; margin-left:10px; margin-top:13px;"class="pull-right">
+                  <%if !session[:edit]%>
+                    <%= link_to "View Orders | ", carts_path, :class => 'nav_bar_link' %>
+                    <%= link_to "Switch to Sell mode | ", toggle_edit_path, :class => 'nav_bar_link' %>
+                  <%else%>
+                  <%= link_to "Switch to Buy mode |", toggle_edit_path, :class => 'nav_bar_link' %>
+                  <%end%>
+                  </h5>
+                <%end%>
+              <%if !session[:edit]%>
+              <%= link_to "Cart: " + current_cart.get_total_items.to_s + " items", current_cart, :class => 'btn btn-inverse', :style => 'color:white;' %>
+              <%end%>
+
+          </div>
+        </div>
+    </header>
